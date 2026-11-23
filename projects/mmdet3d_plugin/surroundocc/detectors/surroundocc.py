@@ -5,7 +5,6 @@
 # ---------------------------------------------
 
 #import open3d as o3d
-from tkinter.messagebox import NO
 import torch
 from mmcv.runner import force_fp32, auto_fp16
 from mmdet.models import DETECTORS
@@ -164,6 +163,9 @@ class SurroundOcc(MVXTwoStageDetector):
         if self.is_vis:
             self.generate_output(pred_occ, img_metas)
             return pred_occ.shape[0]
+
+        if gt_occ is None:
+            return {'occ_preds': pred_occ}
 
         if self.use_semantic:
             class_num = pred_occ.shape[1]
